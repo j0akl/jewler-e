@@ -26,7 +26,7 @@ export class Item extends BaseEntity {
   price!: number;
 
   @Field(() => User)
-  @OneToMany((type) => User, (user) => user.items)
+  @OneToMany(() => User, (user) => user.items)
   owner!: User;
 
   @Field(() => String)

@@ -1,11 +1,9 @@
 import argon2 from "argon2";
 import { User } from "../entities/User";
-import { MyContext } from "src/types";
 import {
   Resolver,
   Field,
   ObjectType,
-  Ctx,
   Mutation,
   Arg,
   InputType,
@@ -13,6 +11,7 @@ import {
   Int,
 } from "type-graphql";
 import { validateRegister } from "../utils/validateRegister";
+import { validateLogin } from "src/utils/validateLogin";
 
 @ObjectType()
 class FieldError {
@@ -41,6 +40,16 @@ export class RegisterInput {
 
   @Field(() => String)
   password!: string;
+}
+
+@InputType()
+export class LoginInput {
+  @Field(() => String)
+  usernameOrEmail!: string;
+  @Field(() => String)
+  password!: string;
+  @Field(() => Boolean)
+  rememberMe!: boolean;
 }
 
 @Resolver(User)
@@ -116,6 +125,50 @@ export class UserResolver {
       };
     }
     // create session at this point ie. log the user in
+    return { user };
+  }
+
+  @Mutation(() => UserResponse)
+  async login(@Arg("inputs") inputs: LoginInput): Promise<UserResponse> {
+    const errors = validateLogin(inputs);
+    if (errors) {
+      return errors;
+    }
+
+    let user;
+
+    if (inputs.usernameOrEmail.includes("@")) {
+      user = await User.findOne({ email: inputs.usernameOrEmail });
+    } else {
+      user = await User.findOne({ username: inputs.usernameOrEmail });
+    }
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "username or email",
+            message: "user with the given credentials does not exist",
+          },
+        ],
+      };
+    }
+    const passwordCorrect = await argon2.verify(user.password, inputs.password);
+    // should send back some sort of counter that checks the number of failed attempts
+    // might be better to track this on frontend
+    if (!passwordCorrect) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "incorrect password",
+          },
+        ],
+      };
+    }
+
+    // create session here
+    // check if rememberMe, create session, else dont sent cookie and save session
     return { user };
   }
 }
