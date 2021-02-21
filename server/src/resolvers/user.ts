@@ -9,9 +9,11 @@ import {
   InputType,
   Query,
   Int,
+  Ctx,
 } from "type-graphql";
 import { validateRegister } from "../utils/validateRegister";
 import { validateLogin } from "../utils/validateLogin";
+import { MyContext } from "src/types";
 
 @ObjectType()
 class FieldError {
@@ -54,8 +56,19 @@ export class LoginInput {
 
 @Resolver(User)
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: MyContext) {
+    // used to get the current user if they are logged in
+    const id = req.session.userId;
+    if (!id) {
+      // user is not logged in, don't send any data
+    }
+    return await User.findOne(id);
+  }
+
   @Query(() => UserResponse)
   async user(@Arg("id", () => Int) id: number): Promise<UserResponse> {
+    // used to find a user by their id
     const user = await User.findOne(id);
     if (!user) {
       return {
@@ -71,9 +84,28 @@ export class UserResolver {
     }
   }
 
+  @Query(() => UserResponse)
+  async userByUsername(
+    @Arg("username", () => String) username: string
+  ): Promise<UserResponse> {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "A user with that username was not found",
+          },
+        ],
+      };
+    }
+    return { user };
+  }
+
   @Mutation(() => UserResponse)
   async register(
-    @Arg("inputs") inputs: RegisterInput // add req context when creating a session
+    @Arg("inputs") inputs: RegisterInput, // add req context when creating a session
+    @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const errors = validateRegister(inputs); // TODO add field validation
     if (errors) {
@@ -125,6 +157,7 @@ export class UserResolver {
       };
     }
     // create session at this point ie. log the user in
+    req.session.userId = user.id;
     return { user };
   }
 

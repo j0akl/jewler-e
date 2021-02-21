@@ -11,6 +11,8 @@ const breakpoints = createBreakpoints({
   xl: "80em",
 });
 
+// not really sure what this file does,
+// think its like a style.css
 const theme = extendTheme({
   colors: {
     black: "#16161D",

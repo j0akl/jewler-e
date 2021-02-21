@@ -7,6 +7,10 @@ import { Item } from "./entities/Item";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user";
+import session from "express-session";
+import { sqlOptions } from "./utils/db";
+import { COOKIE_NAME, __prod__ } from "./utils/constants";
+const MySQLStore = require("express-mysql-session")(session);
 
 // CONSTANTS
 const PORT: number = 8000;
@@ -32,6 +36,23 @@ const PORT: number = 8000;
   const app = express();
 
   app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
+  // session connection to database
+  app.use(
+    session({
+      name: COOKIE_NAME, // name of the cookie, check constants.ts
+      store: new MySQLStore(sqlOptions),
+      secret: "inaowiejhfoawjeofi", // TODO change in prod, random string
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365, // one year expire time
+        httpOnly: true,
+        sameSite: "lax", // TODO think this has to be changed for prod
+        secure: __prod__, // cookie will only work in https if prod
+      },
+    })
+  );
 
   // server to communicate with Urql client in react.
   // sends graphql data back and forth

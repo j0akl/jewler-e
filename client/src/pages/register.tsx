@@ -41,6 +41,9 @@ export const Register: React.FC<RegisterProps> = ({}) => {
             // user has been created, navigate to the homepage
             // TODO pass previous page as a param so the user is
             // returned to the page they came from
+            // when using a link rather than a button redirect,
+            // use the NextLink component. Works the same as <a>,
+            // but uses relative path "/page"
             router.push("/");
           }
         }}
@@ -77,4 +80,6 @@ export const Register: React.FC<RegisterProps> = ({}) => {
   );
 };
 
+// notice the withUrqlClient. any page that communicates with the server
+// needs this
 export default withUrqlClient(createUrqlClient)(Register);
