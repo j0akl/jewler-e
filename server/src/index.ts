@@ -13,6 +13,7 @@ const PORT: number = 8000;
 
 // main function, called at startup
 (async (): Promise<void> => {
+  // creates the connection to the MySQL database
   const connection = await createConnection({
     type: "mysql",
     host: "localhost",
@@ -25,12 +26,17 @@ const PORT: number = 8000;
     logging: true,
   });
 
+  // updates the database
   await connection.runMigrations();
 
   const app = express();
 
-  app.use(cors({ credentials: true }));
+  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
+  // server to communicate with Urql client in react.
+  // sends graphql data back and forth
+  // as we add more data types, items etc
+  // add the corrosponding resolvers to the resolver array
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver],

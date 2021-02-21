@@ -11,7 +11,7 @@ import {
   Int,
 } from "type-graphql";
 import { validateRegister } from "../utils/validateRegister";
-import { validateLogin } from "src/utils/validateLogin";
+import { validateLogin } from "../utils/validateLogin";
 
 @ObjectType()
 class FieldError {

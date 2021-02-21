@@ -1,5 +1,24 @@
 # Jewler-E
 
+Notes for Dexter:
+
+I'm using vscode extension prettier for code formatting, I can send you my config
+if you want to go down that route. Formats on save, really consistent rules looks nice
+
+- to install, git pull -> cd server -> yarn install -> cd ../client -> yarn install
+- to start client, yarn dev in client folder (updates on save), currently on localhost:3000
+- to start server, yarn watch, then in another terminal tab: yarn dev. Compiles changes to
+  server/dist, then updates on save
+- need to have MySQL installed. This is probably where we should use docker
+  // TODO docker
+
+Within the client, src/components/\_app.tsx is a basic container, no need to touch that, comes prebuilt
+client/src/pages contains all the pages of the application. Example, if a page is named store.tsx,
+the page can be found at localhost:3000/store. For things that will have an ID like a specific item,
+there will be a subfolder in src/pages. Example: item no. 420, located at localhost:3000/item/420 , file located at
+src/pages/item/[id].tsx. The info located in brackets can be accessed in react as a parameter. The item folder
+would have its own index.tsx which would be the homepage for localhost:3000/item
+
 TODO:
 
 - add docker
