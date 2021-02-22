@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { createConnection } from "typeorm";
@@ -12,6 +13,8 @@ import { sqlOptions } from "./utils/db";
 import { COOKIE_NAME, __prod__ } from "./utils/constants";
 const MySQLStore = require("express-mysql-session")(session);
 
+dotenv.config();
+
 // CONSTANTS
 const PORT: number = 8000;
 
@@ -20,11 +23,11 @@ const PORT: number = 8000;
   // creates the connection to the MySQL database
   const connection = await createConnection({
     type: "mysql",
-    host: "localhost",
+    host: process.env.MYSQL_HOST,
     port: 3306,
-    username: "root",
-    password: "goober123", // TODO fix in prod
-    database: "jewlere",
+    username: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DB,
     entities: [User, Item],
     synchronize: true,
     logging: true,
