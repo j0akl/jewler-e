@@ -13,10 +13,11 @@ import { sqlOptions } from "./utils/db";
 import { COOKIE_NAME, __prod__ } from "./utils/constants";
 const MySQLStore = require("express-mysql-session")(session);
 
-dotenv.config();
-
 // main function, called at startup
 (async (): Promise<void> => {
+  // access to env vars from .env and docker-compose.yml
+  dotenv.config();
+
   // creates the connection to the MySQL database
   const connection = await createConnection({
     type: "mysql",
