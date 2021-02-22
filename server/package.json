@@ -1,15 +1,16 @@
 {
   "name": "jewler-e",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "repository": "https://github.com/j0akl/jewler-e.git",
   "author": "Jake Lynn <jklynn9@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/argon2": "^0.15.0",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
-    "@types/express-session": "^1.17.3",
     "@types/express-mysql-session": "^2.1.2",
+    "@types/express-session": "^1.17.3",
     "@types/mysql": "^2.15.17",
     "@types/node": "^14.14.25",
     "@types/pg": "^7.14.9",
@@ -21,13 +22,14 @@
   "scripts": {
     "watch": "tsc -w",
     "start": "node dist/index.js",
-    "dev": "nodemon dist/index.js"
+    "dev": "nodemon"
   },
   "dependencies": {
     "apollo-server-express": "^2.19.2",
     "argon2": "^0.27.1",
     "class-validator": "^0.13.1",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.5",
     "express-session": "^1.17.1",
