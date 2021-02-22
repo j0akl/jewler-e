@@ -1,7 +1,6 @@
 import { LoginInput } from "../resolvers/user";
 
 // TODO add more validation if necessary
-
 export const validateLogin = (inputs: LoginInput) => {
   if (!inputs.usernameOrEmail) {
     return {

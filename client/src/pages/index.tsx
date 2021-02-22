@@ -4,7 +4,7 @@ import React from "react";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 // home page
-const Index = () => <Box></Box>;
+const Index = () => <Box>refresh test</Box>;
 
 // at the bottom of every page:
 // export default withUrqlClient(createUrqlClient)(Componentname)

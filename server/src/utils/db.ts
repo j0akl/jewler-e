@@ -1,7 +1,4 @@
 import { createConnection } from "mysql";
-import * as dotenv from "dotenv";
-
-dotenv.config();
 
 export const sqlOptions = {
   host: process.env.MYSQL_HOST,

@@ -10,6 +10,12 @@ import {
 } from "typeorm";
 import { Item } from "./Item";
 
+// this file defines the fields of the user type
+// @ObjectType is for graphql, @Entity is for communication
+// with the database through the orm
+// each field follows the format:
+// @Field(() -> T) - only if you want to expose the field to client,
+// @Column(options)  notice how the password column doesnt have a field
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {

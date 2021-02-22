@@ -15,9 +15,6 @@ const MySQLStore = require("express-mysql-session")(session);
 
 dotenv.config();
 
-// CONSTANTS
-const PORT: number = 8000;
-
 // main function, called at startup
 (async (): Promise<void> => {
   // creates the connection to the MySQL database
@@ -30,7 +27,7 @@ const PORT: number = 8000;
     database: process.env.MYSQL_DB,
     entities: [User, Item],
     synchronize: true,
-    logging: true,
+    logging: false, // true when working w database queries
   });
 
   // updates the database
@@ -81,5 +78,7 @@ const PORT: number = 8000;
     res.send("Welcome to the Jewler-e API");
   });
 
-  app.listen(PORT, () => console.log("Server running on port: " + PORT));
+  app.listen(process.env.PORT, () =>
+    console.log("Server running on port: " + process.env.PORT)
+  );
 })().catch((err) => console.log(err));
