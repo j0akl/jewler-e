@@ -14,6 +14,10 @@ there will be a subfolder in src/pages. Example: item no. 420, located at localh
 src/pages/item/[id].tsx. The info located in brackets can be accessed in react as a parameter. The item folder
 would have its own index.tsx which would be the homepage for localhost:3000/item
 
+To launch in docker:
+
+> docker-compose up -d --build
+
 TODO:
 
 - flesh out functionality
