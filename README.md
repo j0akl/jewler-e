@@ -35,8 +35,15 @@ Communities:
  - hobbies/interests
  - areas
 
-Same as jewlery, X% commission on every item sold
+Same as jewlere, X% commission on every item sold
 
 Profile badges, community based or not
 
 Expandable tree comment view
+
+Shouldn't be any harder to implement than jewlere, just a little more complex.
+Way more money to be made if we expand the vision, start with a beta for
+certain communities who are particularly conducive to the platform (r/mk)
+to build hype. Eventually allow arbitrary community creation (at release)
+
+
