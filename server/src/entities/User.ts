@@ -36,14 +36,14 @@ export class User extends BaseEntity {
   password!: string;
 
   @Field(() => [Item])
-  @OneToMany(() => Item, (item) => item.owner)
+  @OneToMany(() => Item, (item) => item.owner, { cascade: true })
   items: Item[];
 
   @Field(() => Date)
   @CreateDateColumn()
-  createdAt: Date;
+  created!: Date;
 
   @Field(() => Date)
   @UpdateDateColumn()
-  updatedAt: Date;
+  updated!: Date;
 }

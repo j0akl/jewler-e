@@ -15,14 +15,7 @@ import { COOKIE_NAME } from "../utils/constants";
 import { validateRegister } from "../utils/validateRegister";
 import { validateLogin } from "../utils/validateLogin";
 import { MyContext } from "src/types";
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-  @Field()
-  message: string;
-}
+import FieldError from "./FieldError"
 
 @ObjectType()
 class UserResponse {
@@ -49,8 +42,10 @@ export class RegisterInput {
 export class LoginInput {
   @Field(() => String)
   usernameOrEmail!: string;
+
   @Field(() => String)
   password!: string;
+
   @Field(() => Boolean)
   rememberMe!: boolean;
 }
@@ -65,13 +60,13 @@ export class UserResolver {
       // user is not logged in, don't send any data
       return null;
     }
-    return await User.findOne(id);
+    return await User.findOne(id, { relations: ["items"] });
   }
 
   @Query(() => UserResponse)
   async user(@Arg("id", () => Int) id: number): Promise<UserResponse> {
     // used to find a user by their id
-    const user = await User.findOne(id);
+    const user = await User.findOne(id, { relations: ["items"] });
     if (!user) {
       return {
         errors: [

@@ -2,11 +2,13 @@ import "reflect-metadata";
 import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { createConnection } from "typeorm";
+import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
+import { getConnection, createConnection } from "typeorm";
 import { User } from "./entities/User";
 import { Item } from "./entities/Item";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
+import { ItemResolver } from "./resolvers/item";
 import { UserResolver } from "./resolvers/user";
 import session from "express-session";
 import { sqlOptions } from "./utils/db";
@@ -63,9 +65,14 @@ const MySQLStore = require("express-mysql-session")(session);
   // add the corrosponding resolvers to the resolver array
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, ItemResolver],
       validate: false,
     }),
+    plugins: [
+      ApolloServerLoaderPlugin({
+        typeormGetConnection: getConnection,
+      })
+    ],
     context: ({ req, res }) => ({ req, res }),
   });
 

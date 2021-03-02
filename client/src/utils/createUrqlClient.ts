@@ -1,4 +1,4 @@
-import { cacheExchange, Cache } from "@urql/exchange-graphcache";
+import { cacheExchange } from "@urql/exchange-graphcache";
 import { dedupExchange, Exchange, fetchExchange } from "urql";
 import { pipe, tap } from "wonka";
 import {

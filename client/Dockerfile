@@ -10,7 +10,6 @@ RUN yarn install
 
 COPY . /usr/src/app/client/
 
-RUN yarn build
 EXPOSE 3000
 
 CMD ["yarn", "dev"]

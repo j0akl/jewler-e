@@ -1,10 +1,10 @@
 import { Field, Float, Int, ObjectType } from "type-graphql";
 import {
-  BaseEntity,
+  JoinColumn,
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -12,42 +12,43 @@ import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Item extends BaseEntity {
+export class Item {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
   @Field(() => String)
   @Column()
-  name!: string;
-
-  @Field(() => String)
-  @Column()
-  brand!: string; // maybe this should be its own type as well
+  brand: string; // maybe this should be its own type as well
 
   @Field(() => Float)
   @Column()
-  price!: number;
+  price: number;
 
   @Field(() => User)
-  @OneToMany(() => User, (user) => user.items)
-  owner!: User;
+  @ManyToOne(() => User, (user) => user.items)
+  @JoinColumn()
+  owner: User;
 
   @Field(() => String)
   @Column()
-  model!: String;
+  model: String;
 
   @Field(() => String)
   @Column()
+  condition: string; // enum type later
+
+  @Field(() => String)
+  @Column({ nullable: true }) // change later
   refNumber: string; // not sure if string or int, depends on brand probably
 
   @Field(() => String)
-  @Column() // does this have to be unique? what if an item is sold then sold again?
+  @Column({ nullable: true }) // does this have to be unique? what if an item is sold then sold again?
   serial: string;
 
   @CreateDateColumn()
-  createdAt!: Date;
+  created: Date;
 
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updated: Date;
 }
