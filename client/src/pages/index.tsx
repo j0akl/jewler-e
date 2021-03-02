@@ -1,10 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import React from "react";
+import { Layout } from "../components/Layout";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 // home page
-const Index = () => <Box>refresh test</Box>;
+const Index = () => {
+  return (
+    <Layout variant="full">
+      <Box>test</Box>
+    </Layout>
+  )
+};
 
 // at the bottom of every page:
 // export default withUrqlClient(createUrqlClient)(Componentname)
