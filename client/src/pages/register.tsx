@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Wrapper from "../components/Wrapper";
+import { Layout } from "../components/Layout";
 import NextLink from "next/link";
 import { Form, Formik } from "formik";
 import { useRegisterMutation } from "../generated/graphql";
@@ -22,7 +22,7 @@ export const Register: React.FC<RegisterProps> = ({}) => {
 
   return (
     // wrapper is a component to control width of pages
-    <Wrapper variant="small">
+    <Layout isLoginOrRegister={true} variant="small">
       {/* formik is a good form component, easy to use */}
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
@@ -90,7 +90,7 @@ export const Register: React.FC<RegisterProps> = ({}) => {
           </Form>
         )}
       </Formik>
-    </Wrapper>
+    </Layout>
   );
 };
 

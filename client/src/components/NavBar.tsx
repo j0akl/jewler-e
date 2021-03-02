@@ -25,7 +25,7 @@ export const NavBar: React.FC<NavBarProps> = ({ isLoginOrRegister = false }) => 
   }
   const navBarStyle = {
     backgroundColor: "floralwhite",
-    height: "9vh",
+    height: "85px",
     boxShadow: "0px 2px 10px",
     top: 0,
     alignItems: "center",

@@ -11,17 +11,17 @@ services:
       MYSQL_DATABASE: jewlere
 
   client:
+    container_name: client
     build:
       context: client
       dockerfile: Dockerfile
-    container_name: client
-    restart: always
     ports:
       - "3000:3000"
     volumes:
       - /usr/src/app/client/node_modules
       - /usr/src/app/client/.next
       - ./client:/usr/src/app/client
+    restart: unless-stopped
 
   server:
     container_name: server

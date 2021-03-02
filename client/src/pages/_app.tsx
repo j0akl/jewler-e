@@ -1,5 +1,4 @@
 import { ThemeProvider, CSSReset } from "@chakra-ui/react";
-import * as React from "react";
 
 import theme from "../theme";
 import "../styles/styles.css"

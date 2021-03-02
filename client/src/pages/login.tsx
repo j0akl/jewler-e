@@ -58,7 +58,7 @@ const Login: React.FC<LoginProps> = ({}) => {
               </Flex>
               <Flex mt={4}>
                 <Button isLoading={isSubmitting} type="submit">
-                  Register
+                  Log In
                 </Button>
                 <NextLink href="/login">
                   <Link 
@@ -68,7 +68,7 @@ const Login: React.FC<LoginProps> = ({}) => {
                     mt="auto"
                     fontSize="16px"
                   >
-                    Log In
+                    Register
                   </Link>
                 </NextLink>
               </Flex>

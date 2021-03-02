@@ -31,7 +31,7 @@ export const MyAccount: React.FC<MyAccountProps> = ({}) => {
       </Flex>
     )
   } else {
-    router.push("/register");
+    router.push("/");
   }
   return (
     <Layout variant="small">
