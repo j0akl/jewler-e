@@ -22,7 +22,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <Box>
         <NextLink href="/register">
-          <Link mr={2}>Register / Login</Link>
+          <Link mt="auto" mb="auto" mr={10}>Register / Login</Link>
         </NextLink>
       </Box>
     )
@@ -30,7 +30,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 
   const navBarStyle = {
     backgroundColor: "cornsilk",
-    borderBottom: "1px solid black",
+    height: "5vh",
     boxShadow: "0px 2px",
     top: 0,
     zIndex: 1,

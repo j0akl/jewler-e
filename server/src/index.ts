@@ -28,7 +28,7 @@ const MySQLStore = require("express-mysql-session")(session);
     database: process.env.MYSQL_DB,
     entities: [User, Item],
     synchronize: true,
-    logging: false, // true when working w database queries
+    logging: true, // true when working w database queries
   });
 
   // updates the database

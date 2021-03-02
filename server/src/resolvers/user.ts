@@ -162,7 +162,10 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  async login(@Arg("inputs") inputs: LoginInput): Promise<UserResponse> {
+  async login(
+    @Arg("inputs") inputs: LoginInput,
+    @Ctx() { req }: MyContext
+  ): Promise<UserResponse> {
     const errors = validateLogin(inputs);
     if (errors) {
       return errors;
@@ -202,6 +205,9 @@ export class UserResolver {
 
     // create session here
     // check if rememberMe, create session, else dont sent cookie and save session
+    if (inputs.rememberMe) {
+      req.session.userId = user.id;
+    }
     return { user };
   }
 }
