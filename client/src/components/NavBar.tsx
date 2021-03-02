@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Link, Box } from "@chakra-ui/react";
+import { Flex, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useMeQuery } from "../generated/graphql";
 
@@ -11,17 +11,19 @@ export const NavBar: React.FC<NavBarProps> = ({ isLoginOrRegister = false }) => 
 
   const [{ data, fetching }] = useMeQuery();
 
-  const accountButtonStyle = {
-    marginRight: "3em",
-    fontSize: "18px",
-    padding: "1px",
-    paddingRight: "12px",
-    paddingLeft: "12px",
-    backgroundColor: "white",
-    border: "1px solid rgba(0, 0, 0, 0.5)",
-    boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.5)",
-    borderRadius: "3px",
-    alignItems: "center"
+  const accountButtonStyle = (marginRight: string) => {
+    return {
+      marginRight,
+      fontSize: "24px",
+      padding: "1px",
+      paddingRight: "12px",
+      paddingLeft: "12px",
+      backgroundColor: "white",
+      border: "1px solid rgba(0, 0, 0, 0.5)",
+      boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.5)",
+      borderRadius: "3px",
+      alignItems: "center"
+    }
   }
   const navBarStyle = {
     backgroundColor: "floralwhite",
@@ -34,15 +36,37 @@ export const NavBar: React.FC<NavBarProps> = ({ isLoginOrRegister = false }) => 
   }
   const logoBoxStyle = {
     marginLeft: "2em",
-    fontSize: "30px",
+    fontSize: "36px",
     padding: "1px",
-    paddingRight: "12px",
-    paddingLeft: "12px",
+    paddingRight: "20px",
+    paddingLeft: "20px",
     backgroundColor: "white",
     border: "1px solid rgba(0, 0, 0, 0.5)",
     boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.5)",
     borderRadius: "2em",
     alignItems: "center"
+  }
+  const sellBoxStyle = {
+    fontWeight: 700, // same as typical bold font
+    marginRight: "75px",
+    marginLeft: "auto",
+    fontSize: "30px",
+    padding: "1px",
+    paddingRight: "12px",
+    color: "floralwhite",
+    paddingLeft: "12px",
+    backgroundColor: "crimson",
+    border: "1px solid rgba(0, 0, 0, 0.5)",
+    boxShadow: "1px 1px 5px rgba(0, 0, 0, 0.5)",
+    borderRadius: "2em",
+    alignItems: "center"
+  }
+  const linkStyle = (marginRight: string) => {
+    return {
+      marginTop: "auto",
+      marginBottom: "auto",
+      marginRight
+    }
   }
 
   let body = null;
@@ -53,19 +77,19 @@ export const NavBar: React.FC<NavBarProps> = ({ isLoginOrRegister = false }) => 
     } else if (data?.me) {
      body = (
         <NextLink href="/my-account">
-            <Flex style={accountButtonStyle}>
-              {data.me.username}
+            <Flex style={accountButtonStyle("40px")}>
+              My Account
             </Flex>
         </NextLink>
       );
     } else {
       body = (
         <Flex>
-            <NextLink href="/login">
-              <Link mt="auto" mb="auto" mr={5}>Log In</Link>
-            </NextLink>
             <NextLink href="/register">
-              <Flex style={accountButtonStyle}>Register</Flex>
+              <Flex style={accountButtonStyle("20px")}>Register</Flex>
+            </NextLink>
+            <NextLink href="/login">
+              <Link style={linkStyle("3em")}>Log In</Link>
             </NextLink>
         </Flex>
       )
@@ -78,7 +102,15 @@ export const NavBar: React.FC<NavBarProps> = ({ isLoginOrRegister = false }) => 
       <NextLink href="/">
         <Flex style={logoBoxStyle}>JewlerE</Flex>
       </NextLink>
-      <Box ml={"auto"}>{body}</Box>
+      <Flex ml={"auto"}>
+        <NextLink href="/about-jewlere">
+          <Link style={linkStyle("50px")}>What is JewlerE?</Link>
+        </NextLink>
+        <NextLink href="/sell">
+          <Flex style={sellBoxStyle}>Sell</Flex>
+        </NextLink>
+        {body}
+      </Flex>
     </Flex>
   )
 };

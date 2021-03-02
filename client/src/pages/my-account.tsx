@@ -21,21 +21,23 @@ export const MyAccount: React.FC<MyAccountProps> = ({}) => {
     // data is loading
   } else if (data?.me) {
     body = (
-      <Flex>
-        <Button 
+      <>
+        {/* place profile pic here */}
+        <Button
+          ml="auto"
           isLoading={logoutFetching} 
           onClick={() => logout()}
         >
           Log Out
         </Button>
-      </Flex>
+      </>
     )
   } else {
     router.push("/");
   }
   return (
     <Layout variant="small">
-      <Flex>{body}</Flex>
+      <Flex w="100%">{body}</Flex>
     </Layout>
   )
 }
