@@ -18,9 +18,15 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  item: ItemResponse;
   me?: Maybe<User>;
   user: UserResponse;
   userByUsername: UserResponse;
+};
+
+
+export type QueryItemArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -33,26 +39,38 @@ export type QueryUserByUsernameArgs = {
   username: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Int'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  items: Array<Item>;
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+export type ItemResponse = {
+  __typename?: 'ItemResponse';
+  errors?: Maybe<Array<FieldError>>;
+  item?: Maybe<Item>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
 };
 
 export type Item = {
   __typename?: 'Item';
   id: Scalars['Int'];
-  name: Scalars['String'];
   brand: Scalars['String'];
   price: Scalars['Float'];
   owner: User;
   model: Scalars['String'];
+  condition: Scalars['String'];
   refNumber: Scalars['String'];
   serial: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Int'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  items?: Maybe<Array<Item>>;
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 
@@ -62,17 +80,17 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
+  postSale: ItemResponse;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+};
+
+
+export type MutationPostSaleArgs = {
+  inputs: PostSaleInput;
 };
 
 
@@ -83,6 +101,13 @@ export type MutationRegisterArgs = {
 
 export type MutationLoginArgs = {
   inputs: LoginInput;
+};
+
+export type PostSaleInput = {
+  brand: Scalars['String'];
+  model: Scalars['String'];
+  condition: Scalars['String'];
+  price: Scalars['Float'];
 };
 
 export type RegisterInput = {
@@ -104,7 +129,11 @@ export type RegularErrorFragment = (
 
 export type RegularUserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username' | 'email' | 'createdAt' | 'updatedAt'>
+  & Pick<User, 'id' | 'username' | 'createdAt' | 'updatedAt'>
+  & { items?: Maybe<Array<(
+    { __typename?: 'Item' }
+    & Pick<Item, 'id'>
+  )>> }
 );
 
 export type RegularUserResponseFragment = (
@@ -167,7 +196,9 @@ export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
   username
-  email
+  items {
+    id
+  }
   createdAt
   updatedAt
 }

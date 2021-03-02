@@ -47,8 +47,8 @@ export class Item {
   serial: string;
 
   @CreateDateColumn()
-  created: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated: Date;
+  updatedAt: Date;
 }

@@ -1,7 +1,9 @@
 fragment RegularUser on User {
   id
   username
-  email
+  items {
+    id
+  }
   createdAt
   updatedAt
 }
