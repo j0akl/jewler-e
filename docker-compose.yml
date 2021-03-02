@@ -1,22 +1,6 @@
 version: "3.7"
 
 services:
-  server:
-    container_name: server
-    build:
-      context: server/
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./:/server
-    env_file: server/.env
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: secret
-      MYSQL_DB: jewlere
-
   mysql:
     image: mysql:5.7
     container_name: mysql_dev
@@ -28,15 +12,35 @@ services:
 
   client:
     build:
-      context: client/
+      context: client
       dockerfile: Dockerfile
     container_name: client
+    restart: always
     ports:
       - "3000:3000"
     volumes:
       - /usr/src/app/client/node_modules
       - /usr/src/app/client/.next
-      - ./:/client
+      - ./client:/usr/src/app/client
+
+  server:
+    container_name: server
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - /usr/src/app/server/node_modules
+      - ./server:/usr/src/app/server
+    env_file: server/.env
+    restart: unless-stopped
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: jewlere
+
 
 volumes:
   jewlere-dev-data:

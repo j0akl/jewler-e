@@ -22,7 +22,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <Box>
         <NextLink href="/register">
-          <Link mt="auto" mb="auto" mr={10}>Register / Login</Link>
+          <Link>Register / Login</Link>
         </NextLink>
       </Box>
     )

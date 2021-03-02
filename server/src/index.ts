@@ -18,6 +18,8 @@ const MySQLStore = require("express-mysql-session")(session);
   // access to env vars from .env and docker-compose.yml
   dotenv.config();
 
+  console.log("test")
+
   // creates the connection to the MySQL database
   const connection = await createConnection({
     type: "mysql",

@@ -19,6 +19,10 @@ export class Item extends BaseEntity {
 
   @Field(() => String)
   @Column()
+  name!: string;
+
+  @Field(() => String)
+  @Column()
   brand!: string; // maybe this should be its own type as well
 
   @Field(() => Float)
