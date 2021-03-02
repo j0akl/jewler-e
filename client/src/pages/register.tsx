@@ -1,11 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Wrapper from "../components/Wrapper";
+import NextLink from "next/link";
 import { Form, Formik } from "formik";
 import { useRegisterMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import InputField from "../components/InputField";
-import { Box, Button } from "@chakra-ui/react";
+import { Flex, Link, Box, Button } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
@@ -70,9 +71,22 @@ export const Register: React.FC<RegisterProps> = ({}) => {
                 type="password"
               />
             </Box>
-            <Button mt={4} isLoading={isSubmitting} type="submit">
-              Register
-            </Button>
+            <Flex mt={8}>
+              <Button isLoading={isSubmitting} type="submit">
+                Register
+              </Button>
+              <NextLink href="/login">
+                <Link 
+                  ml="auto"
+                  mr="5"
+                  mb="auto"
+                  mt="auto"
+                  fontSize="16px"
+                >
+                  Log In
+                </Link>
+              </NextLink>
+            </Flex>
           </Form>
         )}
       </Formik>

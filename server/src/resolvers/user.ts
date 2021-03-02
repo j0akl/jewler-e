@@ -11,6 +11,7 @@ import {
   Int,
   Ctx,
 } from "type-graphql";
+import { COOKIE_NAME } from "../utils/constants";
 import { validateRegister } from "../utils/validateRegister";
 import { validateLogin } from "../utils/validateLogin";
 import { MyContext } from "src/types";
@@ -62,6 +63,7 @@ export class UserResolver {
     const id = req.session.userId;
     if (!id) {
       // user is not logged in, don't send any data
+      return null;
     }
     return await User.findOne(id);
   }
@@ -209,5 +211,19 @@ export class UserResolver {
       req.session.userId = user.id;
     }
     return { user };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { req, res }: MyContext): Promise<Boolean> {
+    return new Promise((resolve) => {
+      req.session.destroy(err => {
+        res.clearCookie(COOKIE_NAME);
+        if (err) {
+          console.log(err);
+          resolve(false);
+        }
+        resolve(true);
+      })
+    })
   }
 }

@@ -7,9 +7,11 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 // home page
 const Index = () => {
   return (
-    <Layout variant="regular">
-      <Box> change</Box>
-    </Layout>
+    <>
+      <Layout variant="regular">
+        <Box> change</Box>
+      </Layout>
+    </>
   )
 };
 
