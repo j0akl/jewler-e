@@ -1,12 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Layout } from "../components/Layout";
+import { Wrapper } from "../components/Wrapper";
 import NextLink from "next/link";
 import { Form, Formik } from "formik";
 import { useRegisterMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import InputField from "../components/InputField";
-import { Flex, Link, Box, Button } from "@chakra-ui/react";
+import { Text, Center, Flex, Link, Box, Button } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
@@ -22,8 +22,11 @@ export const Register: React.FC<RegisterProps> = ({}) => {
 
   return (
     // wrapper is a component to control width of pages
-    <Layout isLoginOrRegister={true} variant="small">
+    <Wrapper variant="small">
       {/* formik is a good form component, easy to use */}
+      <Center mb={10}>
+        <Text fontSize="3xl">Log In</Text>
+      </Center>
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
@@ -76,13 +79,7 @@ export const Register: React.FC<RegisterProps> = ({}) => {
                 Register
               </Button>
               <NextLink href="/login">
-                <Link 
-                  ml="auto"
-                  mr="5"
-                  mb="auto"
-                  mt="auto"
-                  fontSize="16px"
-                >
+                <Link ml="auto" mr="5" mb="auto" mt="auto" fontSize="16px">
                   Log In
                 </Link>
               </NextLink>
@@ -90,7 +87,7 @@ export const Register: React.FC<RegisterProps> = ({}) => {
           </Form>
         )}
       </Formik>
-    </Layout>
+    </Wrapper>
   );
 };
 

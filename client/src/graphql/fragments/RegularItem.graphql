@@ -1,0 +1,11 @@
+fragment RegularItem on Item {
+  id
+  model
+  brand
+  price
+  owner {
+    ...RegularUser
+  }
+  createdAt
+  updatedAt
+}

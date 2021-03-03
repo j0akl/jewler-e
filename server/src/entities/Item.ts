@@ -7,12 +7,13 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  BaseEntity,
 } from "typeorm";
 import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Item {
+export class Item extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,9 +47,11 @@ export class Item {
   @Column({ nullable: true }) // does this have to be unique? what if an item is sold then sold again?
   serial: string;
 
+  @Field(() => Date)
   @CreateDateColumn()
   createdAt: Date;
 
+  @Field(() => Date)
   @UpdateDateColumn()
   updatedAt: Date;
 }

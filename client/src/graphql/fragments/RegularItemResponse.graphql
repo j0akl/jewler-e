@@ -1,0 +1,8 @@
+fragment RegularItemResponse on ItemResponse {
+  item {
+    ...RegularItem
+  }
+  errors {
+    ...RegularError
+  }
+}

@@ -32,8 +32,8 @@ Can sort a user's profile based on community
 
 Communities:
  - classifieds (anything not-illegal goes)
- - hobbies/interests
- - areas
+ - hobbies/interests (collecting based or not)
+ - locations
 
 Same as jewlere, X% commission on every item sold
 

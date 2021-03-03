@@ -1,6 +1,6 @@
 {
   "name": "jewler-e",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "main": "src/index.ts",
   "repository": "https://github.com/j0akl/jewler-e.git",
   "author": "Jake Lynn <jklynn9@gmail.com>",

@@ -15,7 +15,7 @@ import { COOKIE_NAME } from "../utils/constants";
 import { validateRegister } from "../utils/validateRegister";
 import { validateLogin } from "../utils/validateLogin";
 import { MyContext } from "src/types";
-import FieldError from "./FieldError"
+import FieldError from "./FieldError";
 
 @ObjectType()
 class UserResponse {
@@ -180,7 +180,7 @@ export class UserResolver {
       return {
         errors: [
           {
-            field: "username or email",
+            field: "usernameOrEmail",
             message: "user with the given credentials does not exist",
           },
         ],
@@ -211,14 +211,14 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async logout(@Ctx() { req, res }: MyContext): Promise<Boolean> {
     return new Promise((resolve) => {
-      req.session.destroy(err => {
+      req.session.destroy((err) => {
         res.clearCookie(COOKIE_NAME);
         if (err) {
           console.log(err);
           resolve(false);
         }
         resolve(true);
-      })
-    })
+      });
+    });
   }
 }

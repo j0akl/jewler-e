@@ -61,6 +61,8 @@ export type Item = {
   condition: Scalars['String'];
   refNumber: Scalars['String'];
   serial: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type User = {
@@ -82,15 +84,15 @@ export type UserResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  postSale: ItemResponse;
+  postItem: ItemResponse;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
 };
 
 
-export type MutationPostSaleArgs = {
-  inputs: PostSaleInput;
+export type MutationPostItemArgs = {
+  inputs: PostItemInput;
 };
 
 
@@ -103,7 +105,7 @@ export type MutationLoginArgs = {
   inputs: LoginInput;
 };
 
-export type PostSaleInput = {
+export type PostItemInput = {
   brand: Scalars['String'];
   model: Scalars['String'];
   condition: Scalars['String'];
@@ -125,6 +127,26 @@ export type LoginInput = {
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
   & Pick<FieldError, 'field' | 'message'>
+);
+
+export type RegularItemFragment = (
+  { __typename?: 'Item' }
+  & Pick<Item, 'id' | 'model' | 'brand' | 'price' | 'createdAt' | 'updatedAt'>
+  & { owner: (
+    { __typename?: 'User' }
+    & RegularUserFragment
+  ) }
+);
+
+export type RegularItemResponseFragment = (
+  { __typename?: 'ItemResponse' }
+  & { item?: Maybe<(
+    { __typename?: 'Item' }
+    & RegularItemFragment
+  )>, errors?: Maybe<Array<(
+    { __typename?: 'FieldError' }
+    & RegularErrorFragment
+  )>> }
 );
 
 export type RegularUserFragment = (
@@ -168,6 +190,19 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type PostItemMutationVariables = Exact<{
+  inputs: PostItemInput;
+}>;
+
+
+export type PostItemMutation = (
+  { __typename?: 'Mutation' }
+  & { postItem: (
+    { __typename?: 'ItemResponse' }
+    & RegularItemResponseFragment
+  ) }
+);
+
 export type RegisterMutationVariables = Exact<{
   inputs: RegisterInput;
 }>;
@@ -203,12 +238,36 @@ export const RegularUserFragmentDoc = gql`
   updatedAt
 }
     `;
+export const RegularItemFragmentDoc = gql`
+    fragment RegularItem on Item {
+  id
+  model
+  brand
+  price
+  owner {
+    ...RegularUser
+  }
+  createdAt
+  updatedAt
+}
+    ${RegularUserFragmentDoc}`;
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
   field
   message
 }
     `;
+export const RegularItemResponseFragmentDoc = gql`
+    fragment RegularItemResponse on ItemResponse {
+  item {
+    ...RegularItem
+  }
+  errors {
+    ...RegularError
+  }
+}
+    ${RegularItemFragmentDoc}
+${RegularErrorFragmentDoc}`;
 export const RegularUserResponseFragmentDoc = gql`
     fragment RegularUserResponse on UserResponse {
   user {
@@ -239,6 +298,17 @@ export const LogoutDocument = gql`
 
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+};
+export const PostItemDocument = gql`
+    mutation PostItem($inputs: PostItemInput!) {
+  postItem(inputs: $inputs) {
+    ...RegularItemResponse
+  }
+}
+    ${RegularItemResponseFragmentDoc}`;
+
+export function usePostItemMutation() {
+  return Urql.useMutation<PostItemMutation, PostItemMutationVariables>(PostItemDocument);
 };
 export const RegisterDocument = gql`
     mutation Register($inputs: RegisterInput!) {

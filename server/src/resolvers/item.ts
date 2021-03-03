@@ -1,5 +1,5 @@
 import { Item } from "../entities/Item";
-import { User } from "../entities/User"
+import { User } from "../entities/User";
 import { getConnection } from "typeorm";
 import {
   UseMiddleware,
@@ -28,7 +28,7 @@ export class ItemResponse {
 }
 
 @InputType()
-export class PostSaleInput {
+export class PostItemInput {
   @Field(() => String)
   brand!: string;
 
@@ -49,14 +49,16 @@ export class ItemResolver {
     const item = await getConnection()
       .createQueryBuilder(Item, "item")
       .where("item.id = :id", { id })
-      .getOne()
+      .getOne();
     // const item = await Item.findOne(id, { relations: ["owner"] });
     if (!item) {
       return {
-        errors: [{
-          field: "id",
-          message: "no item found with that id"
-        }]
+        errors: [
+          {
+            field: "id",
+            message: "no item found with that id",
+          },
+        ],
       };
     } else {
       return { item };
@@ -65,8 +67,8 @@ export class ItemResolver {
 
   @Mutation(() => ItemResponse)
   @UseMiddleware(isAuth)
-  async postSale(
-    @Arg("inputs") inputs: PostSaleInput,
+  async postItem(
+    @Arg("inputs") inputs: PostItemInput,
     @Ctx() { req }: MyContext
   ): Promise<ItemResponse> {
     // TODO: add field validation for items
@@ -77,34 +79,40 @@ export class ItemResolver {
 
     if (!req.session.userId) {
       return {
-        errors: [{
-          field: "user",
-          message: "error getting user"
-        }]
-      }
+        errors: [
+          {
+            field: "user",
+            message: "error getting user",
+          },
+        ],
+      };
     }
 
     const owner = await User.findOne({ id: req.session.userId });
     if (!req.session.userId || !owner) {
       return {
-        errors: [{
-          field: "user",
-          message: "error getting user"
-        }]
-      }
+        errors: [
+          {
+            field: "user",
+            message: "error getting user",
+          },
+        ],
+      };
     }
 
-    const connection = await getConnection();
+    const connection = getConnection();
     const itemRepository = connection.getRepository(Item);
     let item = itemRepository.create({ ...inputs, owner });
     item = await itemRepository.save(item);
 
     if (!item) {
       return {
-        errors: [{
-          field: "unknown",
-          message: "an error occured in creation"
-        }]
+        errors: [
+          {
+            field: "unknown",
+            message: "an error occured in creation",
+          },
+        ],
       };
     }
     return { item };
