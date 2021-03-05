@@ -12,26 +12,28 @@ import {
 
 interface MyDrawerProps {
   buttonProps?: {};
-  text: string;
+  buttonText: string;
+  title: string;
 }
 
 export const MyDrawer: React.FC<MyDrawerProps> = ({
-  text,
+  buttonText,
   buttonProps,
   children,
+  title,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Button {...(buttonProps ? buttonProps : null)} onClick={onOpen}>
-        {text}
+        {buttonText}
       </Button>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>Communities</DrawerHeader>
+            <DrawerHeader>{title}</DrawerHeader>
             <DrawerBody>{children}</DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

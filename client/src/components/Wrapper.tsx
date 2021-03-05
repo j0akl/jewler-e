@@ -11,15 +11,9 @@ export const Wrapper: React.FC<WrapperProps> = ({
   children,
   variant = "regular",
 }) => {
+  console.log(variant);
   return (
-    <Box
-      maxW={variant === "regular" ? "800px" : 
-                        "small" ? "400px":
-                        "full" ? "100vw" : "0px"}
-      w="100%"
-      mt={8}
-      marginX="auto"
-    >
+    <Box maxW={variant === "regular" ? "100vw" : "400px"} mx="auto">
       {children}
     </Box>
   );

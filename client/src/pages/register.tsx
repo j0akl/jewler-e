@@ -24,8 +24,8 @@ export const Register: React.FC<RegisterProps> = ({}) => {
     // wrapper is a component to control width of pages
     <Wrapper variant="small">
       {/* formik is a good form component, easy to use */}
-      <Center mb={10}>
-        <Text fontSize="3xl">Log In</Text>
+      <Center mt={10} mb={10}>
+        <Text fontSize="3xl">Register</Text>
       </Center>
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
@@ -79,7 +79,7 @@ export const Register: React.FC<RegisterProps> = ({}) => {
                 Register
               </Button>
               <NextLink href="/login">
-                <Link ml="auto" mr="5" mb="auto" mt="auto" fontSize="16px">
+                <Link ml="auto" mb="auto" mt="auto" fontSize="16px">
                   Log In
                 </Link>
               </NextLink>
@@ -87,6 +87,11 @@ export const Register: React.FC<RegisterProps> = ({}) => {
           </Form>
         )}
       </Formik>
+      <Flex w="100%" mt={2}>
+        <NextLink href="/sell/register">
+          <Link ml="auto">Become a Seller</Link>
+        </NextLink>
+      </Flex>
     </Wrapper>
   );
 };

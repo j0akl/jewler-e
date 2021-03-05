@@ -1,11 +1,11 @@
 import React from "react";
 import { MyDrawer } from "./MyDrawer";
 import {
-  LinkBox,
-  LinkOverlay,
   Avatar,
   ButtonGroup,
   Button,
+  UnorderedList,
+  ListItem,
   InputGroup,
   Flex,
   Text,
@@ -16,6 +16,7 @@ import {
 import { GoSearch } from "react-icons/go";
 import NextLink from "next/link";
 import { useMeBuyerQuery } from "../generated/graphql";
+import { MyLinkBox } from "./MyLinkBox";
 
 interface NavBarProps {}
 
@@ -31,18 +32,19 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
       <>
         <Flex align="center" my="auto" mr={8}>
           <MyDrawer
-            text="Communities"
+            buttonText="My Account"
+            title={
+              "Hello, " + data.meBuyer.username /* TODO change to firstname */
+            }
             buttonProps={{ colorScheme: "green", mr: 5 }}
           >
-            <Text>test</Text>
+            <UnorderedList listStyleType="none">
+              <MyLinkBox href="/my-account">
+                <ListItem>My Account</ListItem>
+              </MyLinkBox>
+            </UnorderedList>
           </MyDrawer>
-          <LinkBox>
-            <NextLink href="/my-account" passHref>
-              <LinkOverlay>
-                <Avatar size="sm" />
-              </LinkOverlay>
-            </NextLink>
-          </LinkBox>
+          <Avatar size="sm" />
         </Flex>
       </>
     );
@@ -62,17 +64,13 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   }
 
   return (
-    <Flex top={0} position="sticky" h={16} w="100%">
+    <Flex bg="white" top={0} position="sticky" h={16} w="100%">
       <Flex my="auto" align="center" ml={8}>
-        <LinkBox>
-          <NextLink href="/" passHref>
-            <LinkOverlay>
-              <Text fontSize="2xl" fontWeight="semibold">
-                JewlerE
-              </Text>
-            </LinkOverlay>
-          </NextLink>
-        </LinkBox>
+        <MyLinkBox href="/">
+          <Text fontSize="2xl" fontWeight="semibold">
+            JewlerE
+          </Text>
+        </MyLinkBox>
         <InputGroup ml={8}>
           <InputLeftAddon pointerEvents="none" children={<GoSearch />} />
           <Input w={400} />
