@@ -1,49 +1,86 @@
-# Collections
+# Jewler-E
 
-##Idea:
-Form communities around collections, as there are many more groups
-collecting things than one person might expect, think r/mk, watches,
-pokemon cards, jewlery, cars, literally anything.
+Notes for Dexter:
 
-People can use their profile to show off their collections, as well
-as typical posts (sorted by community). Users can sell items from
-their collection, show them off, do whatever they want.
+I'm using vscode extension prettier for code formatting, I can send you my config
+if you want to go down that route. Formats on save, really consistent rules looks nice
 
-Selling:
- - OTO (open to offers)
- - NFS (not for sale)
- - OBO (price or best offer)
- - AUC (auction)
- - BIN (buy it now)
+Its on docker now, lmk about versioning
 
-Posts should be mixed in with listings. Items attached to posts (optionally).
+Within the client, src/components/\_app.tsx is a basic container, no need to touch that, comes prebuilt
+client/src/pages contains all the pages of the application. Example, if a page is named store.tsx,
+the page can be found at localhost:3000/store. For things that will have an ID like a specific item,
+there will be a subfolder in src/pages. Example: item no. 420, located at localhost:3000/item/420 , file located at
+src/pages/item/[id].tsx. The info located in brackets can be accessed in react as a parameter. The item folder
+would have its own index.tsx which would be the homepage for localhost:3000/item
 
-Communities vote on moderators, anyone in the community can apply,
-only those in the top 80% of tenure in a commnity can vote to
-prevent raids and the like.
+To launch in docker:
 
-Community based leaderboards, daily, weekly, all time.
-Based on ratio of up/downvotes and total likes, profile
-views, anything
+> docker-compose up -d --build
 
-Profile is split into two sections. Collections and Posts
-The two are pretty intertwined.
-Can sort a user's profile based on community
+TODO:
 
-Communities:
- - classifieds (anything not-illegal goes)
- - hobbies/interests (collecting based or not)
- - locations
+- flesh out functionality
+- develop frontend design
+- work out deployment framework
 
-Same as jewlere, X% commission on every item sold
+Data to track:
 
-Profile badges, community based or not
+- User
 
-Expandable tree comment view
+  - username
+  - password
+  - email
+  - purchase/sale history
+  - listed items
+  - paypal info?
+  - seller rating
+  - account level
+  - leaderboard stats
+  - privacy data
+  - reviews given/received
+  - chats with buyers/sellers
+  - later:
+    - social profile
+    - followers
+    - following
+    - posts
+  - optional fields:
+    - real name
+    - phone number
 
-Shouldn't be any harder to implement than jewlere, just a little more complex.
-Way more money to be made if we expand the vision, start with a beta for
-certain communities who are particularly conducive to the platform (r/mk)
-to build hype. Eventually allow arbitrary community creation (at release)
+- Item
 
+  - name
+  - images
+  - decription
+  - sale type (buy now, obo, auction, etc)
+  - bids if auction
+  - offers if obo
+  - price
+  - related items
+  - ref number
+  - verifiablility (maybe serial number, not sure yet)
+  - if common item, sale price history
+  - condition
+  - sizing if applicable
+  - release date if applicable
+  - company
+  - category
+  - gender if applicable
 
+- Categories
+
+  - enum data type
+  - list of listings
+  - category descriptions
+  - subcategories
+    - brands
+    - gender (not sure how to relate this to other categories, above or below)
+
+- Leaderboard
+
+  - collection of sale/purchase data for all users
+
+- Chats
+  - messages between buyers/sellers
