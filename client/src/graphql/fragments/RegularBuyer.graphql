@@ -1,0 +1,6 @@
+fragment RegularBuyer on Buyer {
+  id
+  username
+  createdAt
+  updatedAt
+}

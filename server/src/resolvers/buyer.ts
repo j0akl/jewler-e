@@ -1,73 +1,48 @@
 import argon2 from "argon2";
-import { User } from "../entities/User";
+import { Buyer } from "../entities/Buyer";
 import {
   Resolver,
   Field,
   ObjectType,
   Mutation,
   Arg,
-  InputType,
   Query,
-  Int,
   Ctx,
 } from "type-graphql";
 import { COOKIE_NAME } from "../utils/constants";
 import { validateRegister } from "../utils/validateRegister";
 import { validateLogin } from "../utils/validateLogin";
 import { MyContext } from "src/types";
-import FieldError from "./FieldError"
+import { RegisterInput, LoginInput } from "./shared/types/inputs";
+import FieldError from "./shared/types/FieldError";
 
 @ObjectType()
-class UserResponse {
+class BuyerResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
-  @Field(() => User, { nullable: true })
-  user?: User;
+  @Field(() => Buyer, { nullable: true })
+  buyer?: Buyer;
 }
 
-@InputType()
-export class RegisterInput {
-  @Field(() => String)
-  username!: string;
-
-  @Field(() => String)
-  email!: string;
-
-  @Field(() => String)
-  password!: string;
-}
-
-@InputType()
-export class LoginInput {
-  @Field(() => String)
-  usernameOrEmail!: string;
-
-  @Field(() => String)
-  password!: string;
-
-  @Field(() => Boolean)
-  rememberMe!: boolean;
-}
-
-@Resolver(User)
-export class UserResolver {
-  @Query(() => User, { nullable: true })
-  async me(@Ctx() { req }: MyContext) {
+@Resolver(Buyer)
+export class BuyerResolver {
+  @Query(() => Buyer, { nullable: true })
+  async meBuyer(@Ctx() { req }: MyContext) {
     // used to get the current user if they are logged in
     const id = req.session.userId;
     if (!id) {
       // user is not logged in, don't send any data
       return null;
     }
-    return await User.findOne(id, { relations: ["items"] });
+    return await Buyer.findOne(id);
   }
 
-  @Query(() => UserResponse)
-  async user(@Arg("id", () => Int) id: number): Promise<UserResponse> {
+  @Query(() => BuyerResponse)
+  async buyer(@Arg("id", () => String) id: string): Promise<BuyerResponse> {
     // used to find a user by their id
-    const user = await User.findOne(id, { relations: ["items"] });
-    if (!user) {
+    const buyer = await Buyer.findOne(id);
+    if (!buyer) {
       return {
         errors: [
           {
@@ -77,16 +52,16 @@ export class UserResolver {
         ],
       };
     } else {
-      return { user };
+      return { buyer };
     }
   }
 
-  @Query(() => UserResponse)
-  async userByUsername(
+  @Query(() => BuyerResponse)
+  async buyerByUsername(
     @Arg("username", () => String) username: string
-  ): Promise<UserResponse> {
-    const user = await User.findOne({ username });
-    if (!user) {
+  ): Promise<BuyerResponse> {
+    const buyer = await Buyer.findOne({ username });
+    if (!buyer) {
       return {
         errors: [
           {
@@ -96,23 +71,23 @@ export class UserResolver {
         ],
       };
     }
-    return { user };
+    return { buyer };
   }
 
-  @Mutation(() => UserResponse)
-  async register(
+  @Mutation(() => BuyerResponse)
+  async registerBuyer(
     @Arg("inputs") inputs: RegisterInput, // add req context when creating a session
     @Ctx() { req }: MyContext
-  ): Promise<UserResponse> {
+  ): Promise<BuyerResponse> {
     const errors = validateRegister(inputs); // TODO add field validation
     if (errors) {
       return { errors };
     }
 
-    const userIfUsernameExists = await User.findOne({
+    const userIfUsernameExists = await Buyer.findOne({
       username: inputs.username,
     });
-    const userIfEmailExists = await User.findOne({ email: inputs.email });
+    const userIfEmailExists = await Buyer.findOne({ email: inputs.email });
 
     if (userIfUsernameExists) {
       return {
@@ -142,8 +117,8 @@ export class UserResolver {
       email: inputs.email,
     };
 
-    const user = await User.create(userCreationInputs).save();
-    if (!user) {
+    const buyer = await Buyer.create(userCreationInputs).save();
+    if (!buyer) {
       return {
         errors: [
           {
@@ -154,39 +129,44 @@ export class UserResolver {
       };
     }
     // create session at this point ie. log the user in
-    req.session.userId = user.id;
-    return { user };
+    req.session.userId = buyer.id;
+    req.session.userType = "buyer";
+    return { buyer };
   }
 
-  @Mutation(() => UserResponse)
-  async login(
+  @Mutation(() => BuyerResponse)
+  async loginBuyer(
     @Arg("inputs") inputs: LoginInput,
     @Ctx() { req }: MyContext
-  ): Promise<UserResponse> {
+  ): Promise<BuyerResponse> {
     const errors = validateLogin(inputs);
     if (errors) {
       return errors;
     }
 
-    let user;
+    let buyer;
 
     if (inputs.usernameOrEmail.includes("@")) {
-      user = await User.findOne({ email: inputs.usernameOrEmail });
+      buyer = await Buyer.findOne({ email: inputs.usernameOrEmail });
     } else {
-      user = await User.findOne({ username: inputs.usernameOrEmail });
+      buyer = await Buyer.findOne({ username: inputs.usernameOrEmail });
     }
 
-    if (!user) {
+    if (!buyer) {
       return {
         errors: [
           {
-            field: "username or email",
+            field: "usernameOrEmail",
             message: "user with the given credentials does not exist",
           },
         ],
       };
     }
-    const passwordCorrect = await argon2.verify(user.password, inputs.password);
+
+    const passwordCorrect = await argon2.verify(
+      buyer.password,
+      inputs.password
+    );
     // should send back some sort of counter that checks the number of failed attempts
     // might be better to track this on frontend
     if (!passwordCorrect) {
@@ -203,22 +183,23 @@ export class UserResolver {
     // create session here
     // check if rememberMe, create session, else dont sent cookie and save session
     if (inputs.rememberMe) {
-      req.session.userId = user.id;
+      req.session.userId = buyer.id;
     }
-    return { user };
+    req.session.userType = "buyer";
+    return { buyer };
   }
 
   @Mutation(() => Boolean)
-  async logout(@Ctx() { req, res }: MyContext): Promise<Boolean> {
+  async logoutBuyer(@Ctx() { req, res }: MyContext): Promise<Boolean> {
     return new Promise((resolve) => {
-      req.session.destroy(err => {
+      req.session.destroy((err) => {
         res.clearCookie(COOKIE_NAME);
         if (err) {
           console.log(err);
           resolve(false);
         }
         resolve(true);
-      })
-    })
+      });
+    });
   }
 }

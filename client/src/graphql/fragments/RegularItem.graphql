@@ -1,0 +1,10 @@
+fragment RegularItem on Item {
+  id
+  displayName
+  price
+  seller {
+    ...RegularSeller
+  }
+  createdAt
+  updatedAt
+}

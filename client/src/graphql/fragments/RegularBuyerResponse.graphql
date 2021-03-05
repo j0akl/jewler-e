@@ -1,0 +1,8 @@
+fragment RegularBuyerResponse on BuyerResponse {
+  buyer {
+    ...RegularBuyer
+  }
+  errors {
+    ...RegularError
+  }
+}

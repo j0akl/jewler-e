@@ -2,11 +2,11 @@ import { cacheExchange } from "@urql/exchange-graphcache";
 import { dedupExchange, Exchange, fetchExchange } from "urql";
 import { pipe, tap } from "wonka";
 import {
-  LoginMutation,
-  LogoutMutation,
-  MeDocument,
-  MeQuery,
-  RegisterMutation,
+  LoginBuyerMutation,
+  LogoutBuyerMutation,
+  MeBuyerDocument,
+  MeBuyerQuery,
+  RegisterBuyerMutation,
 } from "../generated/graphql";
 import { betterUpdateQuery } from "./betterUpdateQuery";
 import Router from "next/router";
@@ -19,8 +19,8 @@ export const errorExchange: Exchange = ({ forward }) => (ops$) => {
         Router.replace("/register");
       }
     })
-  )
-}
+  );
+};
 
 export const createUrqlClient = (ssrExchange: any) => ({
   url: "http://localhost:8000/graphql", // TODO: should be process var in prod
@@ -30,41 +30,41 @@ export const createUrqlClient = (ssrExchange: any) => ({
     cacheExchange({
       updates: {
         Mutation: {
-          logout: (_result, args, cache, info) => {
-            betterUpdateQuery<LogoutMutation, MeQuery>(
+          logoutBuyer: (_result, args, cache, info) => {
+            betterUpdateQuery<LogoutBuyerMutation, MeBuyerQuery>(
               cache,
-              { query: MeDocument },
+              { query: MeBuyerDocument },
               _result,
-              () => ({ me: null })
+              () => ({ meBuyer: null })
             );
           },
-          login: (_result, args, cache, info) => {
-            betterUpdateQuery<LoginMutation, MeQuery>(
+          loginBuyer: (_result, args, cache, info) => {
+            betterUpdateQuery<LoginBuyerMutation, MeBuyerQuery>(
               cache,
-              { query: MeDocument },
+              { query: MeBuyerDocument },
               _result,
               (result, query) => {
-                if (result.login.errors) {
+                if (result.loginBuyer.errors) {
                   return query;
                 } else {
                   return {
-                    me: result.login.user,
-                  }
+                    meBuyer: result.loginBuyer.buyer,
+                  };
                 }
               }
             );
           },
-          register: (_result, args, cache, info) => {
-            betterUpdateQuery<RegisterMutation, MeQuery>(
+          registerBuyer: (_result, args, cache, info) => {
+            betterUpdateQuery<RegisterBuyerMutation, MeBuyerQuery>(
               cache,
-              { query: MeDocument },
+              { query: MeBuyerDocument },
               _result,
               (result, query) => {
-                if (result.register.errors) {
+                if (result.registerBuyer.errors) {
                   return query;
                 } else {
                   return {
-                    me: result.register.user,
+                    meBuyer: result.registerBuyer.buyer,
                   };
                 }
               }
@@ -75,6 +75,6 @@ export const createUrqlClient = (ssrExchange: any) => ({
     }),
     errorExchange,
     ssrExchange,
-    fetchExchange
+    fetchExchange,
   ],
 });

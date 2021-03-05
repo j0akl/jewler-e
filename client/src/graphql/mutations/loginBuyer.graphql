@@ -1,0 +1,5 @@
+mutation LoginBuyer($inputs: LoginInput!) {
+  loginBuyer(inputs: $inputs) {
+    ...RegularBuyerResponse
+  }
+}
