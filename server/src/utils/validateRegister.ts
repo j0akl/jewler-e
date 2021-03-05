@@ -1,4 +1,4 @@
-import { RegisterInput } from "src/resolvers/user";
+import { RegisterInput } from "src/resolvers/shared/types/inputs";
 
 export const validateRegister = (inputs: RegisterInput) => {
   if (!inputs.email.includes("@")) {

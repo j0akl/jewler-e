@@ -1,4 +1,4 @@
-import { LoginInput } from "../resolvers/user";
+import { LoginInput } from "../resolvers/shared/types/inputs";
 
 // TODO add more validation if necessary
 export const validateLogin = (inputs: LoginInput) => {

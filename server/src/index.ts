@@ -3,12 +3,14 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { createConnection } from "typeorm";
-import { User } from "./entities/User";
+import { Seller } from "./entities/Seller";
+import { Buyer } from "./entities/Buyer";
 import { Item } from "./entities/Item";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { ItemResolver } from "./resolvers/item";
-import { UserResolver } from "./resolvers/user";
+import { SellerResolver } from "./resolvers/seller";
+import { BuyerResolver } from "./resolvers/buyer";
 import session from "express-session";
 import { sqlOptions } from "./utils/db";
 import { COOKIE_NAME, __prod__ } from "./utils/constants";
@@ -19,7 +21,7 @@ const MySQLStore = require("express-mysql-session")(session);
   // access to env vars from .env and docker-compose.yml
   dotenv.config();
 
-  console.log("test")
+  console.log("test");
 
   // creates the connection to the MySQL database
   const connection = await createConnection({
@@ -29,7 +31,7 @@ const MySQLStore = require("express-mysql-session")(session);
     username: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DB,
-    entities: [User, Item],
+    entities: [Buyer, Seller, Item],
     synchronize: true,
     logging: true, // true when working w database queries
   });
@@ -64,7 +66,7 @@ const MySQLStore = require("express-mysql-session")(session);
   // add the corrosponding resolvers to the resolver array
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, ItemResolver],
+      resolvers: [BuyerResolver, SellerResolver, ItemResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res }),

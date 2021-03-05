@@ -1,5 +1,5 @@
+import { Seller } from "../entities/Seller";
 import { Item } from "../entities/Item";
-import { User } from "../entities/User";
 import { getConnection } from "typeorm";
 import {
   UseMiddleware,
@@ -15,8 +15,9 @@ import {
   Ctx,
 } from "type-graphql";
 import { MyContext } from "src/types";
-import FieldError from "./FieldError";
+import FieldError from "./shared/types/FieldError";
 import { isAuth } from "../middleware/isAuth";
+import { isSeller } from "../middleware/isSeller";
 
 @ObjectType()
 export class ItemResponse {
@@ -30,22 +31,25 @@ export class ItemResponse {
 @InputType()
 export class PostItemInput {
   @Field(() => String)
-  brand!: string;
+  displayName!: string;
 
   @Field(() => String)
-  model!: string;
+  description!: string;
 
   @Field(() => String)
   condition!: string;
 
   @Field(() => Float)
   price!: number;
+
+  @Field(() => Int)
+  quantity!: number;
 }
 
 @Resolver(Item)
 export class ItemResolver {
   @Query(() => ItemResponse)
-  async item(@Arg("id", () => Int) id: number): Promise<ItemResponse> {
+  async item(@Arg("id", () => String) id: string): Promise<ItemResponse> {
     const item = await getConnection()
       .createQueryBuilder(Item, "item")
       .where("item.id = :id", { id })
@@ -66,7 +70,7 @@ export class ItemResolver {
   }
 
   @Mutation(() => ItemResponse)
-  @UseMiddleware(isAuth)
+  @UseMiddleware(isAuth, isSeller)
   async postItem(
     @Arg("inputs") inputs: PostItemInput,
     @Ctx() { req }: MyContext
@@ -88,12 +92,12 @@ export class ItemResolver {
       };
     }
 
-    const owner = await User.findOne({ id: req.session.userId });
-    if (!req.session.userId || !owner) {
+    const seller = await Seller.findOne({ id: req.session.userId });
+    if (!req.session.userId || !seller) {
       return {
         errors: [
           {
-            field: "user",
+            field: "seller",
             message: "error getting user",
           },
         ],
@@ -102,7 +106,7 @@ export class ItemResolver {
 
     const connection = getConnection();
     const itemRepository = connection.getRepository(Item);
-    let item = itemRepository.create({ ...inputs, owner });
+    let item = itemRepository.create({ ...inputs, seller });
     item = await itemRepository.save(item);
 
     if (!item) {
