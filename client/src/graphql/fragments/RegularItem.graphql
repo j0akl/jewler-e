@@ -1,10 +1,9 @@
 fragment RegularItem on Item {
   id
-  model
-  brand
+  displayName
   price
-  owner {
-    ...RegularUser
+  seller {
+    ...RegularSeller
   }
   createdAt
   updatedAt

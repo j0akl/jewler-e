@@ -1,6 +1,6 @@
-fragment RegularUser on User {
+fragment RegularSeller on Seller {
   id
-  username
+  name
   items {
     id
   }

@@ -104,6 +104,17 @@ export class ItemResolver {
       };
     }
 
+    if (inputs.quantity < 1) {
+      return {
+        errors: [
+          {
+            field: "quantity",
+            message: "quantity cannot be less than 1",
+          },
+        ],
+      };
+    }
+
     const connection = getConnection();
     const itemRepository = connection.getRepository(Item);
     let item = itemRepository.create({ ...inputs, seller });

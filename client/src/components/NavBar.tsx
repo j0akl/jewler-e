@@ -15,18 +15,18 @@ import {
 } from "@chakra-ui/react";
 import { GoSearch } from "react-icons/go";
 import NextLink from "next/link";
-import { useMeQuery } from "../generated/graphql";
+import { useMeBuyerQuery } from "../generated/graphql";
 
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-  const [{ data, fetching }] = useMeQuery();
+  const [{ data, fetching }] = useMeBuyerQuery();
 
   let loginOrUser = null;
 
   if (fetching) {
     // loading
-  } else if (data?.me) {
+  } else if (data?.meBuyer) {
     loginOrUser = (
       <>
         <Flex align="center" my="auto" mr={8}>
@@ -67,7 +67,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
         <LinkBox>
           <NextLink href="/" passHref>
             <LinkOverlay>
-              <Text fontSize="2xl">Collection</Text>
+              <Text fontSize="2xl" fontWeight="semibold">
+                JewlerE
+              </Text>
             </LinkOverlay>
           </NextLink>
         </LinkBox>

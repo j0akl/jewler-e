@@ -3,7 +3,7 @@ import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
 import { Form, Field, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useLoginMutation } from "../generated/graphql";
+import { useLoginBuyerMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
 import {
   Text,
@@ -23,7 +23,7 @@ interface LoginProps {}
 const Login: React.FC<LoginProps> = ({}) => {
   const router = useRouter();
 
-  const [, login] = useLoginMutation();
+  const [, login] = useLoginBuyerMutation();
 
   return (
     <>
@@ -39,9 +39,9 @@ const Login: React.FC<LoginProps> = ({}) => {
           }}
           onSubmit={async (values, { setErrors }) => {
             const response = await login({ inputs: values });
-            if (response.data?.login.errors) {
-              setErrors(toErrorMap(response.data.login.errors));
-            } else if (response.data?.login.user) {
+            if (response.data?.loginBuyer.errors) {
+              setErrors(toErrorMap(response.data.loginBuyer.errors));
+            } else if (response.data?.loginBuyer.buyer) {
               router.push("/");
             }
           }}

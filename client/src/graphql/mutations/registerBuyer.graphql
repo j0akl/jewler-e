@@ -1,0 +1,5 @@
+mutation RegisterBuyer($inputs: RegisterInput!) {
+  registerBuyer(inputs: $inputs) {
+    ...RegularBuyerResponse
+  }
+}
