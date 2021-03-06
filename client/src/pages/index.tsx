@@ -19,6 +19,9 @@ const Index = () => {
         <Center mt="10">
           <Text fontSize="4xl">Welcome to JewlerE!</Text>
         </Center>
+        <Text m="20px" fontSize="2xl">
+          Trending Items
+        </Text>
         <Flex mx="20px">
           <ItemCard />
         </Flex>
