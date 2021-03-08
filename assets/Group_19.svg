@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="934" height="289" viewBox="0 0 934 289">
+  <g id="Group_19" data-name="Group 19" transform="translate(-104 -152)">
+    <g id="Component_1_4" data-name="Component 1 – 4" transform="translate(104 152)">
+      <g id="Rectangle_2" data-name="Rectangle 2" fill="#fff" stroke="#707070" stroke-width="1">
+        <rect width="934" height="289" rx="67" stroke="none"/>
+        <rect x="0.5" y="0.5" width="933" height="288" rx="66.5" fill="none"/>
+      </g>
+      <text id="JewelrÈ" transform="translate(76 211)" fill="#822020" font-size="182" font-family="SitkaSubheading, Sitka Subheading" letter-spacing="0.15em" opacity="0.85"><tspan x="0" y="0" fill="#000">Jewelr</tspan><tspan y="0" fill="#822020">È</tspan></text>
+    </g>
+    <path id="Icon_awesome-gem" data-name="Icon awesome-gem" d="M84.065,0l15.67,27.7H82.229L70.247,0ZM61.9,0,73.883,27.7H25.851L37.833,0ZM15.67,0H29.488L17.506,27.7H0ZM0,33.245H17.436l21.3,43.582a.525.525,0,0,1-.866.571Zm25.661,0H74.074l-23.722,55.1a.52.52,0,0,1-.952,0ZM61,76.827,82.3,33.245H99.735L61.867,77.381A.518.518,0,0,1,61,76.827Z" transform="translate(546 176.777)"/>
+  </g>
+</svg>
